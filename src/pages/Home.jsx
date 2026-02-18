@@ -6,7 +6,7 @@ import { useDebounce } from "react-use";
 import { getTrending, updateSearchCount } from "../appwrite";
 import Pagination from "../components/Pagination";
 import { Link } from "react-router";
-import { API_BASE_URL, API_OPTION } from "../constant";
+import { API_BASE_URL } from "../constant";
 
 function Home() {
   const [searchText, setSearchText] = useState("");
@@ -21,26 +21,60 @@ function Home() {
   useDebounce(() => setDebounceText(searchText), 500, [searchText]);
   // console.log(trendingMovie);
 
+  // const fetchMovies = async (query = "") => {
+  //   setIsLoading(true);
+  //   setErrorMessage("");
+  //   try {
+  //     const endpoint = query
+  //       ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+  //       : `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`;
+  //     const response = await fetch(endpoint);
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch movie");
+  //     }
+  //     const data = await response.json();
+  //     // console.log(data);
+
+  //     if (data.Result === "false") {
+  //       throw new Error("Failed to fetch movie");
+  //     }
+  //     // console.log(data.total_pages);
+  //     setTotalPages(data.total_pages);
+  //     setMovieList(data.results || []);
+  //     if (query && data.results.length > 0) {
+  //       await updateSearchCount(query, data.results[0]);
+
+  //       const updatedTrending = await getTrending();
+  //       setTrendingMovie(updatedTrending.documents);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     setErrorMessage("Error fetching movies. Please try again later");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
     setErrorMessage("");
+
     try {
       const endpoint = query
-        ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-        : `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`;
-      const response = await fetch(endpoint, API_OPTION);
+        ? `${API_BASE_URL}/api/movies?query=${encodeURIComponent(query)}&page=${page}`
+        : `${API_BASE_URL}/api/movies?page=${page}`;
+
+      const response = await fetch(endpoint);
+
       if (!response.ok) {
         throw new Error("Failed to fetch movie");
       }
-      const data = await response.json();
-      // console.log(data);
 
-      if (data.Result === "false") {
-        throw new Error("Failed to fetch movie");
-      }
-      // console.log(data.total_pages);
+      const data = await response.json();
+
       setTotalPages(data.total_pages);
       setMovieList(data.results || []);
+
       if (query && data.results.length > 0) {
         await updateSearchCount(query, data.results[0]);
 

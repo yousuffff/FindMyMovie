@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Spinner from "../components/Spinner";
-import { API_BASE_URL, API_KEY, API_OPTION } from "../constant";
+// import { API_BASE_URL, API_KEY, } from "../constant";
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -11,7 +11,11 @@ const MovieDetails = () => {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/movie/${id}`, API_OPTION);
+        // const response = await fetch(`${API_BASE_URL}/movie/${id}`, API_OPTION);
+        const response = await fetch(
+          `https://findmymovie-backend.onrender.com/api/movie/${id}
+`,
+        );
         const data = await response.json();
         console.log(data);
         setMovie(data);
