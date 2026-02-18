@@ -1,16 +1,70 @@
-# React + Vite
+## 🎬 Find My Movie — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern movie discovery platform built with React + TailwindCSS, powered by a secure Express backend proxy.
 
-Currently, two official plugins are available:
+## 🔗 Live App:
+https://find-my-movie-xi.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+🔍 Real-time movie search
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+📄 Dynamic movie details page
 
-## Expanding the ESLint configuration
+📊 Trending search analytics
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+📑 Smart pagination system
+
+⚡ Debounced search
+
+🎨 Cinematic UI with TailwindCSS
+
+🏗 Architecture
+```
+User
+  ↓
+Frontend (Vercel)
+  ↓
+Backend API (Render)
+  ↓
+TMDB
+```
+
+
+🔐 The frontend does NOT directly call TMDB.
+All API requests go through a secure backend proxy.
+
+Backend Repo:
+👉 https://github.com/yousuffff/findmymovie-backend
+
+## 🛠 Tech Stack
+
+React (Vite)
+React Router
+TailwindCSS
+Appwrite (Trending analytics)
+Fetch API
+
+## ⚙️ Local Setup
+```bash
+git clone https://github.com/yousuffff/FindMyMovie.git
+cd findmymovie
+npm install
+npm run dev
+```
+## 🌍 Deployment
+
+Hosted on Vercel
+Connected to Render backend API
+
+## 💡 What This Project Demonstrates
+
+Production-ready frontend architecture 
+
+Secure API handling
+
+Real-world problem solving (geo-restricted API)
+
+Clean component structure
+
+Modern UI/UX design
