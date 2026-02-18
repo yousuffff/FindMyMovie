@@ -6,18 +6,7 @@ import { useDebounce } from "react-use";
 import { getTrending, updateSearchCount } from "../appwrite";
 import Pagination from "../components/Pagination";
 import { Link } from "react-router";
-
-const API_BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.VITE_API_TOKEN;
-console.log(API_KEY);
-
-const API_OPTION = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+import { API_BASE_URL, API_OPTION } from "../constant";
 
 function Home() {
   const [searchText, setSearchText] = useState("");
@@ -30,6 +19,7 @@ function Home() {
   const [totalPages, setTotalPages] = useState(1);
 
   useDebounce(() => setDebounceText(searchText), 500, [searchText]);
+  // console.log(trendingMovie);
 
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
@@ -43,12 +33,12 @@ function Home() {
         throw new Error("Failed to fetch movie");
       }
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
       if (data.Result === "false") {
         throw new Error("Failed to fetch movie");
       }
-      console.log(data.total_pages);
+      // console.log(data.total_pages);
       setTotalPages(data.total_pages);
       setMovieList(data.results || []);
       if (query && data.results.length > 0) {
@@ -77,7 +67,7 @@ function Home() {
     const fetchTrendingMovie = async () => {
       try {
         const movie = await getTrending();
-        console.log(movie);
+        // console.log(movie);
         setTrendingMovie(movie.documents);
       } catch (error) {
         console.log(error);
@@ -106,10 +96,12 @@ function Home() {
               <h2>🔥Trending Movie</h2>
               <ul>
                 {trendingMovie.map((movie, index) => (
-                  <li key={movie.$id}>
-                    <p>{index + 1}</p>
-                    <img src={movie.poster_url} alt="movie poster" />
-                  </li>
+                  <Link to={"/movie/" + movie.movie_id} key={movie.movie_id}>
+                    <li key={movie.$id}>
+                      <p>{index + 1}</p>
+                      <img src={movie.poster_url} alt="movie poster" />
+                    </li>
+                  </Link>
                 ))}
               </ul>
             </section>
@@ -124,8 +116,8 @@ function Home() {
             ) : (
               <ul>
                 {movieList.map((movie) => (
-                  <Link to={"/movie/" + movie.id}>
-                    <MovieCard movie={movie} key={movie.id} />
+                  <Link to={"/movie/" + movie.id} key={movie.id}>
+                    <MovieCard movie={movie} />
                   </Link>
                 ))}
               </ul>

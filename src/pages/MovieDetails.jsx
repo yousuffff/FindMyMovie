@@ -1,17 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Spinner from "../components/Spinner";
-
-const API_BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.VITE_API_TOKEN;
-
-const API_OPTION = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+import { API_BASE_URL, API_KEY, API_OPTION } from "../constant";
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -23,6 +13,7 @@ const MovieDetails = () => {
       try {
         const response = await fetch(`${API_BASE_URL}/movie/${id}`, API_OPTION);
         const data = await response.json();
+        console.log(data);
         setMovie(data);
       } catch (error) {
         console.log(error);
@@ -45,7 +36,7 @@ const MovieDetails = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Backdrop Section */}
-      <div className="relative h-[60vh] w-full">
+      <div className="relative h-[60vh] w-full ">
         <img
           src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
           alt={movie.title}
@@ -59,16 +50,17 @@ const MovieDetails = () => {
         <div className="absolute bottom-10 left-10">
           <h1 className="text-4xl md:text-6xl font-bold">{movie.title}</h1>
           <p className="text-gray-300 mt-2 text-lg">
-            ⭐ {movie.vote_average} | 📅 {movie.release_date}
+            ⭐ {movie.vote_average.toFixed(1)} | 📅{" "}
+            {movie.release_date.split("-")[0]}
           </p>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="max-w-6xl mx-auto px-6 -mt-20 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 -mt-18 relative z-10">
         <div className="flex flex-col md:flex-row gap-10">
           {/* Poster */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
@@ -83,7 +75,7 @@ const MovieDetails = () => {
               {movie.genres.map((genre) => (
                 <span
                   key={genre.id}
-                  className="bg-gradient-to-r from-red-500 to-orange-500 px-3 py-1 rounded-full text-sm"
+                  className="bg-linear-to-r from-red-500 to-orange-500 px-3 py-1 rounded-sm text-sm"
                 >
                   {genre.name}
                 </span>
@@ -94,6 +86,14 @@ const MovieDetails = () => {
             <p className="text-gray-400 mb-4">
               ⏱ Runtime: {movie.runtime} minutes
             </p>
+            {movie.spoken_languages.map((lang) => (
+              <span
+                className="bg-linear-to-r from-blue-500 to-blue-800  p-1 m-1 rounded-sm"
+                key={lang.name}
+              >
+                {lang.english_name}{" "}
+              </span>
+            ))}
 
             {/* Overview */}
             <h2 className="text-2xl font-semibold mb-3">Overview</h2>
